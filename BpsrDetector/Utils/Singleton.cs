@@ -1,4 +1,4 @@
-﻿namespace BprpDetector.Utils;
+﻿namespace BpsrDetector.Utils;
 
 public abstract class Singleton<T> where T : class, new()
 {

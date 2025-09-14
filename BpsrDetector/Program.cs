@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using BprpDetector.core;
-using BprpDetector.log;
+using BpsrDetector.core;
+using BpsrDetector.log;
 
 var logger = new ConsoleLogger(); // 你需要实现ILogger接口
 var capture = new GamePacketCapture();

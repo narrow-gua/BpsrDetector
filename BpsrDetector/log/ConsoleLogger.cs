@@ -1,4 +1,4 @@
-﻿namespace BprpDetector.log;
+﻿namespace BpsrDetector.log;
 
 public class ConsoleLogger : ILogger
 {

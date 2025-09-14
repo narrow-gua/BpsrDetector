@@ -1,6 +1,6 @@
 using PacketDotNet.Utils;
 
-namespace BprpDetector.core;
+namespace BpsrDetector.core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

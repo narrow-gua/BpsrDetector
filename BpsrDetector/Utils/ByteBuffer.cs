@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace BprpDetector.Utils;
+namespace BpsrDetector.Utils;
 
 public class ByteBuffer
 {

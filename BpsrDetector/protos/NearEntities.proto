@@ -1,0 +1,79 @@
+﻿syntax = "proto3";
+
+// 顶层消息
+message AppearDisappearMessage {
+  repeated EntityAppearInfo Appear = 1;
+  repeated EntityDisappearInfo Disappear = 2;
+}
+
+// 实体出现信息
+message EntityAppearInfo {
+  uint64 Uuid = 1;                    // 实体UUID
+  int32 EntType = 2;                  // 实体类型（8 = EntPet）
+  AttributeList Attrs = 3;            // 属性列表
+  TempAttributeList TempAttrs = 4;    // 临时属性列表
+  BuffInfoList BuffInfos = 7;         // Buff信息列表
+  UnknownField8 unknown8 = 8;         // 未知字段
+}
+
+// 实体消失信息
+message EntityDisappearInfo {
+  uint64 Uuid = 1;                    // 实体UUID
+}
+
+// 属性列表
+message AttributeList {
+  repeated AttributeInfo Attrs = 2;
+}
+
+// 属性信息
+message AttributeInfo {
+  int32 Id = 1;                       // 属性ID
+  bytes RawData = 2;                  // 原始数据（Base64编码前的bytes）
+}
+
+// 临时属性列表
+message TempAttributeList {
+  repeated TempAttributeInfo Attrs = 1;
+}
+
+// 临时属性信息
+message TempAttributeInfo {
+  int32 Id = 1;                       // 属性ID
+  int32 Value = 2;                    // 属性值
+}
+
+// Buff信息列表
+message BuffInfoList {
+  repeated BuffInfo BuffInfos = 2;
+}
+
+// Buff信息
+message BuffInfo {
+  int32 BuffUuid = 1;                 // Buff UUID
+  int32 BaseId = 2;                   // 基础ID
+  int32 Level = 3;                    // 等级
+  int32 TableUuid = 5;                // 表UUID
+  int64 CreateTime = 6;               // 创建时间
+  uint64 FireUuid = 7;                // 触发者UUID
+  int32 Layer = 8;                    // 层数
+  int32 Count = 10;                   // 计数
+  int32 Duration = 11;                // 持续时间
+  FightSourceInfo FightSourceInfo = 12; // 战斗源信息
+}
+
+// 战斗源信息
+message FightSourceInfo {
+  int32 FightSourceType = 1;          // 战斗源类型
+  int32 SourceConfigId = 2;           // 源配置ID
+}
+
+// 未知字段8的结构
+message UnknownField8 {
+  repeated UnknownField8Item items = 2;
+}
+
+message UnknownField8Item {
+  int32 field1 = 1;
+  int32 field2 = 2;
+}

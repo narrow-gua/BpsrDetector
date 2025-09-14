@@ -1,4 +1,4 @@
-﻿namespace BprpDetector.Models.Enums;
+﻿namespace BpsrDetector.Models.Enums;
 
 public enum MessageType
 {
