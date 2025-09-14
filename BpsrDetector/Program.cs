@@ -1,6 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+using BprpDetector.core;
+using BprpDetector.log;
+
 var logger = new ConsoleLogger(); // 你需要实现ILogger接口
-var capture = new GamePacketCapture(logger);
+var capture = new GamePacketCapture();
 
 try
 {
@@ -30,5 +34,5 @@ catch (Exception ex)
 }
 finally
 {
-    capture.Dispose();
+    capture.Stop();
 }
