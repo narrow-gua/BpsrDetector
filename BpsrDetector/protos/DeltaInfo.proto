@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+// 主消息结构
+message DeltaInfoContainer {
+  DeltaInfo delta_info = 1;
+}
+
+// DeltaInfo消息
+message DeltaInfo {
+  uint64 uuid = 1;                    // 对应 2210431360
+  AttrContainer attrs = 2;            // 属性容器
+  TempAttrContainer temp_attrs = 3;   // 临时属性容器（空）
+}
+
+// 属性容器
+message AttrContainer {
+  repeated AttrItem attrs = 2;        // 属性列表
+}
+
+// 属性项
+message AttrItem {
+  uint32 id = 1;   
+  bytes raw_data = 2;              
+}
+
+// 临时属性容器（当前为空）
+message TempAttrContainer {
+  // 当前没有字段
+}

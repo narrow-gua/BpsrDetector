@@ -169,7 +169,7 @@ namespace BpsrDetector.core
                             // 调用对应的处理方法
                             cacheInfo.Method.Invoke(cacheInfo.ControllerInstance, new object[] { parsedMessage });
                             
-                            Console.WriteLine($"Successfully processed {messageType} message for methodId: {methodId} in {cacheInfo.ControllerType}Ctrl");
+                            //Console.WriteLine($"Successfully processed {messageType} message for methodId: {methodId} in {cacheInfo.ControllerType}Ctrl");
                         }
                         else
                         {
@@ -183,7 +183,7 @@ namespace BpsrDetector.core
                 }
                 else
                 {
-                    Console.WriteLine($"No {messageType} handler found for methodId: {methodId}");
+                    //Console.WriteLine($"No {messageType} handler found for methodId: {methodId}");
                 }
             }
             catch (Exception ex)
@@ -232,7 +232,8 @@ namespace BpsrDetector.core
                         DoRecvPacketDispatch(nestedPacket);
                         break;
                     default:
-                        Console.WriteLine($"Ignore recv packet with message type {msgTypeId}.");
+                        //需要测别的类型的时候把下面注释打开
+                        //Console.WriteLine($"Ignore recv packet with message type {msgTypeId}.");
                         break;
                 }
             }
@@ -259,8 +260,8 @@ namespace BpsrDetector.core
                     msgPayload = PayloadDecompressor.DecompressPayloadWithZstdSharp(msgPayload);
                 }
 
-                Console.WriteLine($"Received Return message - ServiceUuid: {serviceUuid:X}, " +
-                                $"StubId: {stubId}, MethodId: {methodId}, SequenceId: {sequenceId}");
+                // Console.WriteLine($"Received Return message - ServiceUuid: {serviceUuid:X}, " +
+                //                 $"StubId: {stubId}, MethodId: {methodId}, SequenceId: {sequenceId}");
 
                 // 确保缓存已初始化
                 InitializeMethodCache();
@@ -294,8 +295,8 @@ namespace BpsrDetector.core
                     msgPayload = PayloadDecompressor.DecompressPayloadWithZstdSharp(msgPayload);
                 }
 
-                Console.WriteLine($"Received Notify message - ServiceUuid: {serviceUuid:X}, " +
-                                $"StubId: {stubId}, MethodId: {methodId}");
+                // Console.WriteLine($"Received Notify message - ServiceUuid: {serviceUuid:X}, " +
+                //                 $"StubId: {stubId}, MethodId: {methodId}");
 
                 // 确保缓存已初始化
                 InitializeMethodCache();
@@ -305,7 +306,7 @@ namespace BpsrDetector.core
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing notify message: {ex.Message}");
+                //Console.WriteLine($"Error processing notify message: {ex.Message}");
             }
         }
 
@@ -379,8 +380,8 @@ namespace BpsrDetector.core
                     msgPayload = PayloadDecompressor.DecompressPayloadWithZstdSharp(msgPayload);
                 }
 
-                Console.WriteLine($"Send Call - ServiceUuid: {serviceUuid:X}, StubId: {stubId}, " +
-                                $"MethodId: {methodId}, SequenceId: {sequenceId}");
+                // Console.WriteLine($"Send Call - ServiceUuid: {serviceUuid:X}, StubId: {stubId}, " +
+                //                 $"MethodId: {methodId}, SequenceId: {sequenceId}");
 
                 // 确保缓存已初始化
                 InitializeMethodCache();
@@ -415,7 +416,7 @@ namespace BpsrDetector.core
                     nestedPacket = PayloadDecompressor.DecompressPayloadWithZstdSharp(nestedPacket);
                 }
 
-                Console.WriteLine($"Send FrameUp - ServerSequenceId: {serverSequenceId}");
+                // Console.WriteLine($"Send FrameUp - ServerSequenceId: {serverSequenceId}");
                 
                 // 递归处理嵌套数据包
                 DoSendPacketDispatch(nestedPacket);
@@ -445,7 +446,7 @@ namespace BpsrDetector.core
                     msgPayload = PayloadDecompressor.DecompressPayloadWithZstdSharp(msgPayload);
                 }
 
-                Console.WriteLine($"Send Notify - ServiceUuid: {serviceUuid:X}, StubId: {stubId}, MethodId: {methodId}");
+               //Console.WriteLine($"Send Notify - ServiceUuid: {serviceUuid:X}, StubId: {stubId}, MethodId: {methodId}");
 
                 // 确保缓存已初始化
                 InitializeMethodCache();
@@ -471,7 +472,7 @@ namespace BpsrDetector.core
         {
             // TODO: 实现请求跟踪逻辑
             // 可以保存请求信息，用于后续匹配返回消息
-            Console.WriteLine($"Tracking request - SequenceId: {sequenceId}, MethodId: {methodId}");
+            //Console.WriteLine($"Tracking request - SequenceId: {sequenceId}, MethodId: {methodId}");
         }
 
         /// <summary>

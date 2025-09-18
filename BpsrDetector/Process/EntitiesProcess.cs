@@ -1,4 +1,5 @@
-﻿using BpsrDetector.Models.Enums;
+﻿using System.Text.Json;
+using BpsrDetector.Models.Enums;
 using BpsrDetector.Utils;
 using Google.Protobuf;
 
@@ -6,6 +7,25 @@ namespace BpsrDetector.Process;
 
 public class EntitiesProcess : Singleton<EntitiesProcess>
 {
+
+    private readonly Dictionary<int, string> _entityNames;
+    
+    public EntitiesProcess()
+    {
+        try
+        {
+            string filePath = Path.Combine("tables", "Monster_names.json");
+            string jsonData = File.ReadAllText(filePath);
+            _entityNames = JsonSerializer.Deserialize<Dictionary<int, string>>(jsonData);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"加载实体名称文件失败: {ex.Message}");
+            _entityNames = new Dictionary<int, string>(); 
+        }
+    }
+    
+    
     /// <summary>
     /// 处理怪物信息
     /// </summary>
@@ -13,8 +33,73 @@ public class EntitiesProcess : Singleton<EntitiesProcess>
     /// <param name="appearInfoAttrs"></param>
     public void ProcessMonsterAttr(ulong entityUuid, AttributeList appearInfoAttrs)
     {
-        
+        foreach (AttributeInfo attr in appearInfoAttrs.Attrs)
+        {
+            if (attr.RawData == null) continue;
+            var input = new CodedInputStream(attr.RawData.ToByteArray());
+            switch (attr.Id)
+            {
+                case (int)AttrType.AttrName:
+                    var enemyName = input.ReadString();
+                    Console.WriteLine("Found monster name " + enemyName);
+                    break;
+                case (int)AttrType.AttrId:
+                    var attrId = input.ReadInt32();
+                    Console.WriteLine("Found monster name " + _entityNames[attrId]);
+                    break;
+            }
+        }
     }
+
+
+    /// <summary>
+    /// 处理位置的信息
+    /// </summary>
+    /// <param name="entityUuid"></param>
+    /// <param name="appearInfoAttrs"></param>
+    public void ProcessPositionAttr(ulong entityUuid, AttrItem attr)
+    {
+        var input = new CodedInputStream(attr.RawData.ToByteArray());
+        (float x, float y, float z) position = DecodePositionFromStream(input);
+        Console.WriteLine($"[当前位置] UUID: {entityUuid}, 位置: {position}");
+    }
+    
+    
+    
+    private (float x, float y, float z) DecodePositionFromStream(CodedInputStream input)
+    {
+        float x = 0, y = 0, z = 0;
+        while (!input.IsAtEnd)
+        {
+            uint tag = input.ReadTag();
+            int fieldNumber = WireFormat.GetTagFieldNumber(tag);
+            WireFormat.WireType wireType = WireFormat.GetTagWireType(tag);
+            if (wireType != WireFormat.WireType.Fixed32)
+            {
+                input.SkipLastField();
+                continue;
+            }
+            uint rawValue = input.ReadFixed32();
+            float floatValue = BitConverter.ToSingle(BitConverter.GetBytes(rawValue), 0);
+            switch (fieldNumber)
+            {
+                case 1:
+                    x = floatValue;
+                    break;
+                case 2:
+                    y = floatValue;
+                    break;
+                case 3:
+                    z = floatValue;
+                    break;
+            }
+        }
+        return (x, y, z);
+    }
+
+    
+    
+    
 
     /// <summary>
     /// 处理玩家信息
@@ -34,6 +119,7 @@ public class EntitiesProcess : Singleton<EntitiesProcess>
                 {
                     case (int)AttrType.AttrName:
                         var playerName = input.ReadString();
+                        Console.WriteLine("Found player name " + playerName);
                         //this.userDataManager.SetName(playerUid, playerName);
                         break;
 

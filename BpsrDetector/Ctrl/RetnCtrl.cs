@@ -5,4 +5,5 @@ namespace BpsrDetector.Ctrl;
 public class RetnCtrl : Singleton<RetnCtrl>
 {
     
+    
 }

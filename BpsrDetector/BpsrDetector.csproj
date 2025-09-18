@@ -22,6 +22,12 @@
     <ItemGroup>
       <Folder Include="Manager\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="tables\monster_names.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
     
     
 </Project>
