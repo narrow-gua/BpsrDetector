@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+
+
+message LineListResponse {
+  LineListData data = 1;
+}
+
+message LineListData {
+  repeated LineInfo lines = 1;
+}
+
+// 单个线路信息
+message LineInfo {
+  int32 line_id = 1;
+  
+  int32 status = 2;
+  
+  bytes line_uuid = 3;
+}
+
+
+enum LineStatus {
+  SceneLineStatusNone = 0;
+  SceneLineStatusGreen = 1;
+  SceneLineStatusOrange = 2;
+  SceneLineStatusRed = 3;
+  SceneLineStatusBlack = 4;
+}
+
+
+message LineInfoWithEnum {
+  int32 line_id = 1;
+  LineStatus status = 2;
+  bytes line_uuid = 3;
+}

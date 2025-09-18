@@ -5,7 +5,7 @@ namespace BpsrDetector.Utils;
 public class ByteBuffer
 {
     private readonly byte[] buffer;
-    private int index;
+    public int index;
 
     private ByteBuffer(byte[] buffer, int index)
     {

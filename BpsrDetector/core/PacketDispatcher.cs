@@ -248,10 +248,19 @@ namespace BpsrDetector.core
         {
             try
             {
+                //正确解析方式，但是没有MethodId，猜测可能是通过sequenceId去对应，这里直接就抓关键Feature了
+                // var methodId = buffer.ReadUInt32();
+                // var sequenceId = buffer.ReadUInt32();
+                // var stufId = buffer.ReadUInt32();
+                
+                //根据feature推算
                 var serviceUuid = buffer.ReadUInt64();
                 var stubId = buffer.ReadUInt32();
-                var methodId = buffer.ReadUInt32();
-                var sequenceId = buffer.ReadUInt32(); // Return消息通常包含序列ID
+                var stuf = buffer.ReadUInt32();
+                var feature = buffer.ReadUInt32();
+                buffer.index = 18;
+                
+                //到这的偏移应该是 18字节 -> 0A 应该是protobuf的协议一部分
                 var msgPayload = buffer.ReadRemaining();
 
                 // 如果有压缩，先解压
@@ -259,15 +268,12 @@ namespace BpsrDetector.core
                 {
                     msgPayload = PayloadDecompressor.DecompressPayloadWithZstdSharp(msgPayload);
                 }
-
-                // Console.WriteLine($"Received Return message - ServiceUuid: {serviceUuid:X}, " +
-                //                 $"StubId: {stubId}, MethodId: {methodId}, SequenceId: {sequenceId}");
-
+                
                 // 确保缓存已初始化
                 InitializeMethodCache();
 
                 // 使用RetnCtrl处理返回消息
-                ProcessMessage(methodId, msgPayload, _returnMethodCache, "Return");
+                ProcessMessage(feature, msgPayload, _returnMethodCache, "Return");
             }
             catch (Exception ex)
             {
@@ -446,7 +452,7 @@ namespace BpsrDetector.core
                     msgPayload = PayloadDecompressor.DecompressPayloadWithZstdSharp(msgPayload);
                 }
 
-               //Console.WriteLine($"Send Notify - ServiceUuid: {serviceUuid:X}, StubId: {stubId}, MethodId: {methodId}");
+                //Console.WriteLine($"Send Notify - ServiceUuid: {serviceUuid:X}, StubId: {stubId}, MethodId: {methodId}");
 
                 // 确保缓存已初始化
                 InitializeMethodCache();

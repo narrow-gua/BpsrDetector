@@ -8,7 +8,7 @@ message AppearDisappearMessage {
 
 // 实体出现信息
 message EntityAppearInfo {
-  uint64 Uuid = 1;                    // 实体UUID
+  int64 Uuid = 1;                    // 实体UUID
   int32 EntType = 2;                  // 实体类型（8 = EntPet）
   AttributeList Attrs = 3;            // 属性列表
   TempAttributeList TempAttrs = 4;    // 临时属性列表

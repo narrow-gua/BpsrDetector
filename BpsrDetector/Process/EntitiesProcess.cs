@@ -1,7 +1,9 @@
 ﻿using System.Text.Json;
+using BpsrDetector.Manager;
 using BpsrDetector.Models.Enums;
 using BpsrDetector.Utils;
 using Google.Protobuf;
+using Attribute = Notify.Attribute;
 
 namespace BpsrDetector.Process;
 
@@ -61,7 +63,32 @@ public class EntitiesProcess : Singleton<EntitiesProcess>
     {
         var input = new CodedInputStream(attr.RawData.ToByteArray());
         (float x, float y, float z) position = DecodePositionFromStream(input);
-        Console.WriteLine($"[当前位置] UUID: {entityUuid}, 位置: {position}");
+        
+        // UserDataManager.Instance.PositionX = position.x;
+        // UserDataManager.Instance.PositionY = position.y;
+        // UserDataManager.Instance.PositionZ = position.z;
+        //
+        
+        // Console.WriteLine($"[当前位置] UUID: {entityUuid}, 位置: {position}");
+    }
+    
+
+    /// <summary>
+    /// 处理位置的信息
+    /// </summary>
+    /// <param name="entityUuid"></param>
+    /// <param name="appearInfoAttrs"></param>
+    public void ProcessPositionAttr(ulong entityUuid, Attribute attr)
+    {
+        var input = new CodedInputStream(attr.Data.ToByteArray());
+        (float x, float y, float z) position = DecodePositionFromStream(input);
+        if (UserDataManager.Instance.UserId == (long)entityUuid)
+        {
+            UserDataManager.Instance.PositionX = position.x;
+            UserDataManager.Instance.PositionY = position.y;
+            UserDataManager.Instance.PositionZ = position.z;
+            Console.WriteLine($"[当前位置] UUID: {entityUuid}, 位置: {position}");
+        }
     }
     
     
@@ -188,6 +215,7 @@ public class EntitiesProcess : Singleton<EntitiesProcess>
             }
         }
     }
-    
+
+
     
 }

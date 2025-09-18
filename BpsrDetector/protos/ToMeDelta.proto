@@ -1,0 +1,36 @@
+﻿syntax = "proto3";
+
+package Notify;
+
+message DeltaToMeContainer{
+    DeltaToMeInfo info = 1;
+}
+
+// 主要的DeltaInfo消息
+message DeltaToMeInfo {
+  BaseDelta base_delta = 1; 
+  uint64 uuid = 5;         
+}
+
+// 基础Delta信息
+message BaseDelta {
+  uint64 uuid = 1;           
+  AttributeContainer attrs = 2;  
+  TempAttributes temp_attrs = 3;
+}
+
+// 属性容器
+message AttributeContainer {
+  repeated Attribute attrs = 2;  
+}
+
+// 单个属性
+message Attribute {
+  int32 id = 1;             
+  bytes data = 2;    
+}
+
+// 临时属性（当前为空）
+message TempAttributes {
+
+}

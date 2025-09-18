@@ -7,8 +7,8 @@ message DeltaInfoContainer {
 
 // DeltaInfo消息
 message DeltaInfo {
-  uint64 uuid = 1;                    // 对应 2210431360
-  AttrContainer attrs = 2;            // 属性容器
+  uint64 uuid = 1;                    
+  AttrContainer attrs = 2;            
   TempAttrContainer temp_attrs = 3;   // 临时属性容器（空）
 }
 

@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+
+package zproto;
+
+import "stru_char_serialize.proto";
+
+message ContainerRetn {
+  CharSerialize char_serialize = 1;
+}
